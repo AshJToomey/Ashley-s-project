@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accessibility Features</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label, input, textarea, button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #listening {
+            display: none;
+            font-size: 16px;
+            color: #555;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            background-color: #555;
+            border-radius: 50%;
+            animation: bob 1s infinite;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .toggle-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .toggle-label {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="page active" id="page1" role="region" aria-labelledby="page1-heading">
+            <h1 id="page1-heading">Welcome to Page 1</h1>
+            <p>Navigate using arrow keys or voice commands. Say "Next page" or "Previous page" to move.</p>
+        </div>
+        <div class="page" id="page2" role="region" aria-labelledby="page2-heading">
+            <h1 id="page2-heading">Welcome to Page 2</h1>
+            <p>Navigate using voice commands.</p>
+        </div>
+        <div class="page" id="page3" role="region" aria-labelledby="page3-heading">
+            <h1 id="page3-heading">Welcome to Page 3</h1>
+            <p>Use voice commands to navigate.</p>
+        </div>
+        <div class="page" id="contactUs" role="region" aria-labelledby="contactUs-heading">
+            <h1 id="contactUs-heading">Contact Us</h1>
+            <p>Fill in the form below:</p>
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div id="listening">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+    <div class="toggle-container">
+        <label class="toggle-label" for="voiceToggle">Press to Listen</label>
+        <label class="toggle-switch">
+            <input type="checkbox" id="voiceToggle" onchange="toggleVoiceRecognition(this)">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    <script>
+        const pages = document.querySelectorAll('.page');
+        let currentPage = 0;
+        const listeningIndicator = document.getElementById('listening');
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+
+        recognition.onresult = function(event) {
+            const speechResult = event.results[0][0].transcript.toLowerCase().trim();
+            let recognized = false;
+            switch (speechResult) {
+                case 'next page':
+                    nextPage();
+                    recognized = true;
+                    break;
+                case 'previous page':
+                    previousPage();
+                    recognized = true;
+                    break;
+                case 'hey ash':
+                    alert('Hi user!');
+                    recognized = true;
+                    break;
+            }
+            document.getElementById('voiceToggle').checked = false; // Turn off the toggle switch
+            recognition.stop();
+            if (!recognized) {
+                alert('Not a recognized command. Available commands are: "Next page", "Previous page", "Hey Ash".');
+            }
+        };
+
+        recognition.onstart = function() {
+            listeningIndicator.style.display = 'block';
+        };
+
+        recognition.onend = function() {
+            listeningIndicator.style.display = 'none';
+        };
+
+        function toggleVoiceRecognition(checkbox) {
+            if (checkbox.checked) {
+                recognition.start();
+            } else {
+                recognition.stop();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                showPage(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 0) {
+                showPage(currentPage - 1);
+            }
+        }
+
+        function showPage(index) {
+            pages[currentPage].classList.remove('active');
+            pages[index].classList.add('active');
+            currentPage = index;
+        }
+    </script>
+</body>
+</html>
