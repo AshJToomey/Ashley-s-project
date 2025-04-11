@@ -1,8 +1,4 @@
-Your updated HTML page looks fantastic—clean structure, strong accessibility features, and a modern design. To go along with that, here’s an updated and more detailed README.md that reflects the improved voice toggle feature, animations, and interface enhancements:
-
-⸻
-
-Accessible Voice-Navigable Web App
+**Accessible Voice-Navigable Web App**
 
 This is a modern, accessibility-first, multi-page web application that supports keyboard, voice, and toggle-based speech recognition navigation. It is designed to provide an inclusive, interactive, and intuitive user experience.
 
