@@ -43,10 +43,6 @@ Next page	Moves to the next page
 Previous page	Goes back to the last page
 Hey Ash	Triggers a friendly alert
 
-Screenshots (Optional)
-
-Include visuals or a GIF to show the listening toggle, animated dots, or navigation in action.
-
 Future Improvements
 	•	Add form submission with success message
 	•	Expand voice command support (e.g. “Go to Contact”, “Scroll Down”)
@@ -63,7 +59,3 @@ Best viewed in Google Chrome for full functionality.
 License
 
 Open-source under the MIT License.
-
-⸻
-
-Let me know if you’d like a matching walkthrough video script or documentation on adding additional commands or form submission logic!
