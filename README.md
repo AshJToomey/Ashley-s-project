@@ -1,61 +1,92 @@
-**Accessible Voice-Navigable Web App**
+# 🗣️ Accessible Voice-Navigable Web App
 
-This is a modern, accessibility-first, multi-page web application that supports keyboard, voice, and toggle-based speech recognition navigation. It is designed to provide an inclusive, interactive, and intuitive user experience.
+A modern, accessibility-first, multi-page web application designed for **inclusive interaction**. Built using pure HTML, CSS, and JavaScript, the app supports **keyboard navigation**, **voice commands**, and a **voice toggle switch**—creating an intuitive experience for all users.
 
-Features
+---
 
-Navigation
-	•	Keyboard Support: Use ArrowRight / ArrowLeft keys to switch between pages.
-	•	Voice Commands:
-	•	“Next page” – Move to the next screen
-	•	“Previous page” – Go back to the previous screen
-	•	“Hey Ash” – Triggers a friendly greeting
-	•	Voice Toggle Switch: A user-friendly on/off toggle lets users control when the app listens.
-	•	Listening Indicator: Animated dots show when the app is actively listening.
+## 🚀 Features
 
-Pages
-	1.	Page 1 – Introduction & navigation instructions
-	2.	Page 2 – Informational content
-	3.	Page 3 – Additional content
-	4.	Contact Us – Accessible form with validation-ready inputs
+### 🔄 Navigation
+- **⬅️➡️ Keyboard Support**: Use `ArrowRight` and `ArrowLeft` keys to navigate between pages.
+- **🎙️ Voice Commands**:
+  - `"Next page"` – Go forward
+  - `"Previous page"` – Go back
+  - `"Hey Ash"` – Triggers a custom greeting
+- **🎚️ Voice Toggle Switch**: Easily enable or disable voice recognition.
+- **🎧 Listening Indicator**: Animated dots indicate when the app is actively listening for voice commands.
 
-Accessibility
-	•	Semantic HTML and aria-labelledby for screen readers
-	•	Visual feedback with toggle indicators and animation
-	•	Keyboard and voice-based navigation
+---
 
-Tech Stack
-	•	HTML5 + CSS3
-	•	JavaScript (SpeechRecognition API)
-	•	Fully browser-based, no frameworks or backend required
+## 📄 Pages
 
-Instructions
-	1.	Open index.html in Google Chrome (Web Speech API support required).
-	2.	Navigate via:
-	•	Arrow keys
-	•	Toggling the “Press to Listen” switch and using voice commands
-	3.	Use the contact form to simulate a user message input
+1. **Page 1** – Welcome screen with usage instructions  
+2. **Page 2** – Informational content  
+3. **Page 3** – Additional page content  
+4. **Contact Us** – Accessible form with ready-to-expand validation
 
-Voice Commands Reference
+---
 
-Command	Action
-Next page	Moves to the next page
-Previous page	Goes back to the last page
-Hey Ash	Triggers a friendly alert
+## ♿ Accessibility Highlights
 
-Future Improvements
-	•	Add form submission with success message
-	•	Expand voice command support (e.g. “Go to Contact”, “Scroll Down”)
-	•	Support dark mode toggle for accessibility
+- ✅ Semantic HTML and `aria-labelledby` for screen readers
+- ✅ Keyboard + voice control for full navigability
+- ✅ Visual feedback for toggle and active listening states
 
-Compatibility
+---
 
-Feature	Chrome	Firefox	Safari	Edge
-Keyboard navigation	Yes	Yes	Yes	Yes
-SpeechRecognition API	Yes	No	No	Partial
+## 🛠 Tech Stack
 
-Best viewed in Google Chrome for full functionality.
+- **HTML5**
+- **CSS3**
+- **JavaScript (Web Speech API / `SpeechRecognition`)**
+- 💡 Framework-free and fully **browser-based** (no backend required)
 
-License
+---
 
-Open-source under the MIT License.
+## 📖 Instructions
+
+1. Open `index.html` in **Google Chrome** (for full voice command support).
+2. Navigate using:
+   - ⌨️ **Arrow keys**
+   - 🗣️ **Voice**: Enable speech recognition via the “Press to Listen” toggle.
+3. Submit the **Contact Us** form to simulate user input.
+
+---
+
+## 🗣️ Voice Commands Reference
+
+| Command          | Action                        |
+|------------------|-------------------------------|
+| `Next page`      | Moves to the next page        |
+| `Previous page`  | Goes back one page            |
+| `Hey Ash`        | Triggers a friendly greeting  |
+
+---
+
+## 🔮 Future Enhancements
+
+- ✅ Form submission with success feedback
+- ✅ More advanced voice commands (e.g. `"Go to Contact"`, `"Scroll down"`)
+- ✅ **Dark mode toggle** for visual accessibility
+
+---
+
+## 🌐 Compatibility
+
+| Feature                | Chrome | Firefox | Safari | Edge  |
+|------------------------|--------|---------|--------|-------|
+| Keyboard Navigation    | ✅ Yes | ✅ Yes  | ✅ Yes | ✅ Yes |
+| SpeechRecognition API  | ✅ Yes | ❌ No   | ❌ No  | ⚠️ Partial |
+
+> ⚠️ Best experienced in **Google Chrome** due to Web Speech API compatibility.
+
+---
+
+## 📜 License
+
+Open-source under the **MIT License**.  
+Use responsibly and contribute to a more inclusive web! 🌍
+
+---
+
+👤 Developed by **Ashley** – Empowering accessibility through code.
