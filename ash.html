@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Accessibility Features</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible Voice-Navigable Web App</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -50,8 +51,10 @@
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        button:hover,
+        button:focus {
             background-color: #45a049;
+            outline: none;
         }
 
         #listening {
@@ -69,6 +72,7 @@
             background-color: #555;
             border-radius: 50%;
             animation: bob 1s infinite;
+            margin: 0 3px;
         }
 
         @keyframes bob {
@@ -81,167 +85,251 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .toggle-label {
-            display: inline-block;
-            margin-right: 10px;
             font-size: 16px;
             color: #555;
         }
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .toggle-switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
+        #voiceToggleBtn {
+            background: #2196F3;
+            border: none;
             border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.5);
+            transition: background-color 0.3s;
         }
 
-        input:checked + .toggle-slider {
-            background-color: #2196F3;
+        #voiceToggleBtn:focus {
+            outline: 3px solid #ff9800;
         }
 
-        input:checked + .toggle-slider:before {
-            transform: translateX(26px);
+        #voiceToggleBtn.listening {
+            background-color: #f44336;
+            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.7);
+        }
+
+        #voiceToggleBtn::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 12px;
+            height: 20px;
+            background: white;
+            border-radius: 6px;
+            transform: translate(-50%, -50%);
+        }
+
+        #voiceToggleBtn.listening::before {
+            background: #ffdddd;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Accessibility: focus styles */
+        a:focus, button:focus, input:focus, textarea:focus {
+            outline: 3px solid #2196F3;
+            outline-offset: 2px;
         }
 
     </style>
 </head>
 <body>
     <div id="container">
-        <div class="page active" id="page1" role="region" aria-labelledby="page1-heading">
-            <h1 id="page1-heading">Welcome to Page 1</h1>
+        <div class="page active" id="page1" role="region" aria-labelledby="page1-heading" tabindex="-1">
+            <h1 id="page1-heading" tabindex="-1">Welcome to Page 1</h1>
             <p>Navigate using arrow keys or voice commands. Say "Next page" or "Previous page" to move.</p>
         </div>
-        <div class="page" id="page2" role="region" aria-labelledby="page2-heading">
-            <h1 id="page2-heading">Welcome to Page 2</h1>
+        <div class="page" id="page2" role="region" aria-labelledby="page2-heading" tabindex="-1">
+            <h1 id="page2-heading" tabindex="-1">Welcome to Page 2</h1>
             <p>Navigate using voice commands.</p>
         </div>
-        <div class="page" id="page3" role="region" aria-labelledby="page3-heading">
-            <h1 id="page3-heading">Welcome to Page 3</h1>
+        <div class="page" id="page3" role="region" aria-labelledby="page3-heading" tabindex="-1">
+            <h1 id="page3-heading" tabindex="-1">Welcome to Page 3</h1>
             <p>Use voice commands to navigate.</p>
         </div>
-        <div class="page" id="contactUs" role="region" aria-labelledby="contactUs-heading">
-            <h1 id="contactUs-heading">Contact Us</h1>
+        <div class="page" id="contactUs" role="region" aria-labelledby="contactUs-heading" tabindex="-1">
+            <h1 id="contactUs-heading" tabindex="-1">Contact Us</h1>
             <p>Fill in the form below:</p>
             <form id="contactForm">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" required />
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required />
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
                 <button type="submit">Submit</button>
             </form>
         </div>
     </div>
-    <div id="listening">
+
+    <div id="listening" aria-live="polite" aria-atomic="true" role="status" style="display:none;">
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
+        Listening...
     </div>
+
+    <div id="status" role="status" aria-live="polite" style="margin-top:10px; min-height:1.5em; color:#2196F3;"></div>
+
     <div class="toggle-container">
-        <label class="toggle-label" for="voiceToggle">Press to Listen</label>
-        <label class="toggle-switch">
-            <input type="checkbox" id="voiceToggle" onchange="toggleVoiceRecognition(this)">
-            <span class="toggle-slider"></span>
-        </label>
+        <span class="toggle-label">Voice Command:</span>
+        <button id="voiceToggleBtn" aria-pressed="false" aria-label="Start voice recognition"></button>
     </div>
+
     <script>
         const pages = document.querySelectorAll('.page');
         let currentPage = 0;
-        const listeningIndicator = document.getElementById('listening');
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.continuous = true;
-        recognition.interimResults = false;
 
-        recognition.onresult = function(event) {
-            const speechResult = event.results[0][0].transcript.toLowerCase().trim();
-            let recognized = false;
-            switch (speechResult) {
-                case 'next page':
+        const listeningIndicator = document.getElementById('listening');
+        const statusDiv = document.getElementById('status');
+        const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+
+        // Setup SpeechRecognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert('Sorry, your browser does not support Speech Recognition API.');
+        }
+        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+        if (recognition) {
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                listeningIndicator.style.display = 'block';
+                voiceToggleBtn.classList.add('listening');
+                voiceToggleBtn.setAttribute('aria-pressed', 'true');
+                voiceToggleBtn.setAttribute('aria-label', 'Stop voice recognition');
+            };
+
+            recognition.onend = () => {
+                listeningIndicator.style.display = 'none';
+                voiceToggleBtn.classList.remove('listening');
+                voiceToggleBtn.setAttribute('aria-pressed', 'false');
+                voiceToggleBtn.setAttribute('aria-label', 'Start voice recognition');
+            };
+
+            recognition.onerror = (event) => {
+                statusDiv.textContent = `Speech recognition error: ${event.error}`;
+                stopRecognition();
+            };
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+                statusDiv.textContent = `Heard: "${speechResult}"`;
+
+                let recognized = false;
+
+                if (speechResult.includes('next')) {
                     nextPage();
                     recognized = true;
-                    break;
-                case 'previous page':
+                } else if (speechResult.includes('previous')) {
                     previousPage();
                     recognized = true;
-                    break;
-                case 'hey ash':
+                } else if (speechResult.includes('hey ash')) {
                     alert('Hi user!');
                     recognized = true;
-                    break;
-            }
-            document.getElementById('voiceToggle').checked = false; // Turn off the toggle switch
-            recognition.stop();
-            if (!recognized) {
-                alert('Not a recognized command. Available commands are: "Next page", "Previous page", "Hey Ash".');
-            }
-        };
+                } else if (speechResult.includes('go to contact') || speechResult.includes('contact us')) {
+                    showPage(pages.length - 1);
+                    recognized = true;
+                }
 
-        recognition.onstart = function() {
-            listeningIndicator.style.display = 'block';
-        };
+                if (!recognized) {
+                    alert('Command not recognized. Try: "Next page", "Previous page", "Hey Ash", or "Go to contact".');
+                }
 
-        recognition.onend = function() {
-            listeningIndicator.style.display = 'none';
-        };
+                stopRecognition();
+            };
+        }
 
-        function toggleVoiceRecognition(checkbox) {
-            if (checkbox.checked) {
+        function startRecognition() {
+            if (recognition) {
                 recognition.start();
-            } else {
-                recognition.stop();
+                statusDiv.textContent = 'Listening for commands...';
             }
         }
+
+        function stopRecognition() {
+            if (recognition) {
+                recognition.stop();
+                voiceToggleBtn.disabled = false;
+            }
+        }
+
+        voiceToggleBtn.addEventListener('click', () => {
+            if (voiceToggleBtn.classList.contains('listening')) {
+                stopRecognition();
+            } else {
+                startRecognition();
+            }
+        });
 
         function nextPage() {
             if (currentPage < pages.length - 1) {
                 showPage(currentPage + 1);
+            } else {
+                statusDiv.textContent = 'You are on the last page.';
             }
         }
 
         function previousPage() {
             if (currentPage > 0) {
                 showPage(currentPage - 1);
+            } else {
+                statusDiv.textContent = 'You are on the first page.';
             }
         }
 
         function showPage(index) {
+            if (index < 0 || index >= pages.length) return;
             pages[currentPage].classList.remove('active');
             pages[index].classList.add('active');
             currentPage = index;
+
+            // Move focus to the heading of the new page for screen readers
+            const heading = pages[index].querySelector('h1');
+            if (heading) {
+                heading.focus();
+            }
+
+            statusDiv.textContent = `Page ${index + 1} shown.`;
         }
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea') {
+                // Ignore keys when typing in form inputs
+                return;
+            }
+            if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+                previousPage();
+            }
+        });
+
+        // Simple form submission feedback
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for contacting us, ' + contactForm.name.value + '!');
+            contactForm.reset();
+        });
     </script>
 </body>
 </html>
+
